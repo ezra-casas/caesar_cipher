@@ -4,27 +4,34 @@ def caesar_cipher(string, rot=0)
   split_length = split.length
   new_string = []
 
+
   # Get alphabet
   alphabet = ("a".."z").to_a
-  new_alphabet = alphabet.clone
+  upper_alphabet = ("A".."Z").to_a
 
-  # Rotate the alphabet
-  rot.times do |letter|
-    temp = new_alphabet.pop
-    new_alphabet.unshift(temp)
-  end
+  new_alphabet = alphabet.rotate(rot)
+  new_alphabet_upper = upper_alphabet.rotate(rot)
 
   split_length.times do |index|
-    if alphabet.index(split[index]) == nil
-      new_string.push(" ")
-    else
-      new_string.push(new_alphabet[alphabet.index(split[index])])
-    end
 
+    # First checks if letter is in alphabet
+    if alphabet.include?(split[index])     
+      new_string.push(new_alphabet[alphabet.index(split[index])])
+
+      # Second: Checks in upper_alphabet
+    elsif upper_alphabet.include?(split[index])
+      new_string.push(new_alphabet_upper[upper_alphabet.index(split[index])])
+    else
+     # Third: if not a letter then push add to array
+      new_string.push(split[index])
+    end
   end
 
-  p new_string.join("")
 
-
+  new_string.join("")
 end
-caesar_cipher("Hello pizza how are you", 3)
+
+5.times do
+  rot = rand(0..25)
+  p caesar_cipher("My name is Ezra. What is yours", rot)
+end
